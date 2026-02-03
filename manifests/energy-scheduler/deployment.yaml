@@ -20,7 +20,7 @@ spec:
       priorityClassName: system-cluster-critical
       containers:
         - name: energy-scheduler
-          image: localhost:5000/scheduler-plugins/kube-scheduler:latest
+          image: localhost:5000/scheduler-plugins/kube-scheduler:v20260202-v0.32.5-devel-7-g5c0d60ec
           imagePullPolicy: IfNotPresent
           args:
             - --config=/etc/kubernetes/energy-score-config.yaml

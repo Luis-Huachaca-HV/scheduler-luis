@@ -225,6 +225,172 @@ El archivo [energy-score-config.yaml](energy-score-config.yaml) permite personal
 | `weight` | Peso del plugin en la fase de scoring (1-100) | 1 |
 | `weightMultiplier` | Multiplicador adicional para ajustar scores | 1.0 |
 
+## Gestión del Energy Scheduler
+
+### Pasos Completos de Instalación (Resumen Práctico)
+
+Si ya tienes un cluster Kubernetes v1.28+ y quieres levantar el energy-scheduler rápidamente:
+
+#### 1. Compilar la Imagen
+
+```bash
+cd scheduler-plugins
+make local-image
+```
+
+#### 2. Exportar y Cargar en el Cluster
+
+```bash
+# Obtener la imagen compilada
+IMAGE_TAG=$(docker images | grep kube-scheduler | head -1 | awk '{print $2}')
+
+# Exportar la imagen
+docker save localhost:5000/scheduler-plugins/kube-scheduler:${IMAGE_TAG} -o /tmp/energy-scheduler.tar
+
+# En máquinas remotas (si es necesario)
+scp /tmp/energy-scheduler.tar usuario@nodo:/tmp/
+ssh usuario@nodo "sudo ctr -n k8s.io images import /tmp/energy-scheduler.tar"
+```
+
+#### 3. Crear ConfigMap y Desplegar
+
+```bash
+# Actualizar el image tag en el deployment si es necesario
+kubectl create configmap energy-scheduler-config \
+  --from-file=energy-score-config.yaml \
+  -n kube-system
+
+kubectl apply -f manifests/energy-scheduler/rbac.yaml
+kubectl apply -f manifests/energy-scheduler/deployment.yaml
+
+# Verificar que está corriendo
+kubectl get pods -n kube-system | grep energy-scheduler
+```
+
+#### 4. Probar con un Pod
+
+```bash
+kubectl apply -f test-pod.yaml
+kubectl get pods -o wide
+kubectl logs test-energy-score
+```
+
+### Detener el Energy Scheduler (Temporal)
+
+Para pausar el scheduler sin eliminarlo:
+
+```bash
+# Pausar (escalar a 0 réplicas)
+kubectl scale deployment energy-scheduler --replicas=0 -n kube-system
+
+# Verificar que está detenido
+kubectl get pods -n kube-system | grep energy-scheduler
+# (No debe haber resultados)
+```
+
+Los nuevos pods se programarán automáticamente con el scheduler default de Kubernetes.
+
+### Reiniciar el Energy Scheduler
+
+```bash
+# Reanudar (escalar a 1 réplica)
+kubectl scale deployment energy-scheduler --replicas=1 -n kube-system
+
+# Verificar que está corriendo
+kubectl get pods -n kube-system | grep energy-scheduler
+kubectl logs -n kube-system -l component=energy-scheduler --tail=20
+```
+
+### Desinstalar Completamente el Energy Scheduler
+
+#### Si Instalaste como Segundo Scheduler
+
+```bash
+# Opción 1: Eliminar solo el deployment (mantiene RBAC y ConfigMap)
+kubectl delete deployment energy-scheduler -n kube-system
+
+# Opción 2: Eliminar todo (recomendado para limpieza completa)
+kubectl delete -f manifests/energy-scheduler/deployment.yaml
+kubectl delete -f manifests/energy-scheduler/rbac.yaml
+kubectl delete configmap energy-scheduler-config -n kube-system
+
+# Verificar que se eliminó
+kubectl get pods -n kube-system | grep energy-scheduler
+```
+
+#### Si Reemplazaste el Default Scheduler
+
+**Pasos para restaurar el scheduler default:**
+
+```bash
+# 1. Acceder al nodo control-plane
+ssh usuario@control-plane-node
+
+# 2. Restaurar el backup del scheduler original
+sudo mv /etc/kubernetes/kube-scheduler.yaml.backup /etc/kubernetes/manifests/kube-scheduler.yaml
+
+# 3. Eliminar la configuración del energy scheduler
+sudo rm /etc/kubernetes/energy-score-config.yaml
+
+# 4. Salir del nodo
+exit
+
+# 5. Verificar que el default scheduler se reinició
+kubectl get pods -n kube-system | grep kube-scheduler
+
+# 6. Limpiar recursos de Kubernetes
+kubectl delete -f manifests/energy-scheduler/rbac.yaml
+kubectl delete configmap energy-scheduler-config -n kube-system 2>/dev/null || true
+```
+
+### Monitoreo y Debugging
+
+#### Ver el estado del scheduler
+
+```bash
+# Verificar que el pod está corriendo
+kubectl get pods -n kube-system -l component=energy-scheduler
+
+# Ver logs en tiempo real
+kubectl logs -n kube-system -l component=energy-scheduler -f
+
+# Ver logs específicos del plugin EnergyScore
+kubectl logs -n kube-system -l component=energy-scheduler | grep -i energy
+
+# Ver eventos de programación
+kubectl get events --sort-by='.lastTimestamp' | grep -i scheduled | tail -10
+```
+
+#### Verificar qué scheduler programó un pod
+
+```bash
+# Ver información del pod
+kubectl describe pod <pod-name>
+
+# Ver cuál scheduler lo programó (en los eventos)
+kubectl describe pod <pod-name> | grep -A 5 "Events:"
+
+# Verificar el schedulerName del pod
+kubectl get pod <pod-name> -o jsonpath='{.spec.schedulerName}'
+```
+
+#### Solucionar problemas
+
+```bash
+# Pods que no se programan
+kubectl get pods --field-selector=status.phase=Pending
+
+# Ver por qué un pod está pending
+kubectl describe pod <pod-name>
+
+# Ver logs de error del scheduler
+kubectl logs -n kube-system -l component=energy-scheduler | grep -i error
+
+# Verificar permisos RBAC
+kubectl get clusterrolebinding | grep energy-scheduler
+kubectl auth can-i get nodes --as=system:serviceaccount:kube-system:energy-scheduler
+```
+
 ### Desinstalar el Energy Scheduler
 
 #### Si Instalaste como Segundo Scheduler

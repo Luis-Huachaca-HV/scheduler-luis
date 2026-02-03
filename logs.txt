@@ -1,0 +1,286 @@
+luish@luish-Nitro-AN515-57:~/Documents/death/scheduler-plugins$  make local-image
+rm -rf ./bin
+BUILDER=docker \
+PLATFORMS="linux/$(uname -m)" \
+RELEASE_VERSION="v0.0.0" \
+REGISTRY="localhost:5000/scheduler-plugins" \
+IMAGE=kube-scheduler:v20260202-v0.32.5-devel-7-g5c0d60ec \
+CONTROLLER_IMAGE=controller:v20260202-v0.32.5-devel-7-g5c0d60ec \
+GO_BASE_IMAGE=golang:1.23.0 \
+DISTROLESS_BASE_IMAGE=gcr.io/distroless/static:nonroot \
+DOCKER_BUILDX_CMD= \
+EXTRA_ARGS="--load" hack/build-images.sh
+/usr/bin/docker
+[+] Building 129.2s (16/16) FINISHED                           docker-container:relaxed_turing
+ => [internal] booting buildkit                                                          14.7s
+ => => pulling image moby/buildkit:buildx-stable-1                                       13.7s
+ => => creating container buildx_buildkit_relaxed_turing0                                 1.0s
+ => [internal] load build definition from Dockerfile                                      0.0s
+ => => transferring dockerfile: 1.07kB                                                    0.0s
+ => WARN: InvalidDefaultArgInFrom: Default value for ARG $GO_BASE_IMAGE results in empty  0.0s
+ => [internal] load metadata for gcr.io/distroless/static:nonroot                         1.6s
+ => [internal] load metadata for docker.io/library/golang:1.23.0                          6.7s
+ => [auth] library/golang:pull token for registry-1.docker.io                             0.0s
+ => [internal] load .dockerignore                                                         0.0s
+ => => transferring context: 2B                                                           0.0s
+ => [builder 1/4] FROM docker.io/library/golang:1.23.0@sha256:acfb46be39840f8c2a6b9efdd  29.8s
+ => => resolve docker.io/library/golang:1.23.0@sha256:acfb46be39840f8c2a6b9efdd673c66270  0.0s
+ => => sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc1 32B / 32B  0.3s
+ => => sha256:01c85014d0d1b661aa84465b70040e742ef94cbf936533fb4bc455bd11c715 126B / 126B  0.5s
+ => => sha256:c4b14fb4020d7e427735797bf663a02a5a028e40fae0f8993ed5dfe 73.97MB / 73.97MB  27.6s
+ => => sha256:20663332bcc9b53cdcb67c88a48326dc358db93b72dc2032af41c46 92.26MB / 92.26MB  26.0s
+ => => sha256:2e66a70da0bec13fb3d492fcdef60fd8a5ef0a1a65c4e8a4909e267 64.15MB / 64.15MB  25.9s
+ => => sha256:2e6afa3f266c11e8960349e7866203a9df478a50362bb5488c45fe39 24.05MB / 24.05MB  6.4s
+ => => sha256:8cd46d290033f265db57fd808ac81c444ec5a5b3f189c3d6d85043b 49.56MB / 49.56MB  12.2s
+ => => extracting sha256:8cd46d290033f265db57fd808ac81c444ec5a5b3f189c3d6d85043b64733691  0.6s
+ => => extracting sha256:2e6afa3f266c11e8960349e7866203a9df478a50362bb5488c45fe39d99b270  0.2s
+ => => extracting sha256:2e66a70da0bec13fb3d492fcdef60fd8a5ef0a1a65c4e8a4909e26742852f0f  0.8s
+ => => extracting sha256:20663332bcc9b53cdcb67c88a48326dc358db93b72dc2032af41c46239a3574  1.0s
+ => => extracting sha256:c4b14fb4020d7e427735797bf663a02a5a028e40fae0f8993ed5dfe75f15417  1.5s
+ => => extracting sha256:01c85014d0d1b661aa84465b70040e742ef94cbf936533fb4bc455bd11c715e  0.0s
+ => => extracting sha256:4f4fb700ef54461cfa02571ae0db9a0dc1e0cdb5577484a6d75e68dc38e8acc  0.0s
+ => [internal] load build context                                                         0.4s
+ => => transferring context: 83.53MB                                                      0.4s
+ => [stage-1 1/3] FROM gcr.io/distroless/static:nonroot@sha256:f9f84bd968430d7d35e8e6d55  2.5s
+ => => resolve gcr.io/distroless/static:nonroot@sha256:f9f84bd968430d7d35e8e6d55c40efb0b  0.0s
+ => => sha256:bdfd7f7e5bf6fc27e70b59101db21c3d8284d283884419dd5fe702 136.99kB / 136.99kB  0.9s
+ => => sha256:ebddc55facdc6b1f7e0f30816a5fc7cc62f38abdf76c0a8b0a0ce520857547 311B / 311B  0.4s
+ => => sha256:4aa0ea1413d37a58615488592a0b827ea4b2e48fa5a77cf707d0e35f025e61 385B / 385B  0.5s
+ => => sha256:dd64bf2dd177757451a98fcdc999a339c35dee5d9872d8f4dc69c8f3c4dd0112 80B / 80B  0.5s
+ => => sha256:52630fc75a18675c530ed9eba5f55eca09b03e91bd5bc15307918bbc1a7e72 162B / 162B  0.3s
+ => => sha256:3214acf345c0cc6bbdb56b698a41ccdefc624a09d6beb0d38b5de0b2303eca 123B / 123B  0.3s
+ => => sha256:7c12895b777bcaa8ccae0605b4de635b68fc32d60fa08f421dc3818bf55ee2 188B / 188B  0.3s
+ => => sha256:2780920e5dbfbe103d03a583ed75345306e572ec5a48cb10361f046767d9f29a 67B / 67B  0.3s
+ => => sha256:6c29fa69851d31d83c4dd6fc945a71ac4db00aa194e411c7f4474f04 34.90kB / 34.90kB  0.7s
+ => => sha256:f61f270e56cb07fde8391e3e1e10c1efd73e7c0b55b2c38aa966f8 332.58kB / 332.58kB  1.3s
+ => => sha256:d346af46627fd1e866892447238c7c7a727a9b63c37094a58708e81f 13.63kB / 13.63kB  0.5s
+ => => sha256:210d88f2ba026d0c6f1a43a31d732668ff685635f2851e2d0f377b 106.05kB / 106.05kB  0.9s
+ => => extracting sha256:210d88f2ba026d0c6f1a43a31d732668ff685635f2851e2d0f377b164fadede  0.0s
+ => => extracting sha256:d346af46627fd1e866892447238c7c7a727a9b63c37094a58708e81f7e5ade3  0.0s
+ => => extracting sha256:f61f270e56cb07fde8391e3e1e10c1efd73e7c0b55b2c38aa966f81333740c7  0.0s
+ => => extracting sha256:6c29fa69851d31d83c4dd6fc945a71ac4db00aa194e411c7f4474f0411771ed  0.0s
+ => => extracting sha256:2780920e5dbfbe103d03a583ed75345306e572ec5a48cb10361f046767d9f29  0.0s
+ => => extracting sha256:7c12895b777bcaa8ccae0605b4de635b68fc32d60fa08f421dc3818bf55ee21  0.0s
+ => => extracting sha256:3214acf345c0cc6bbdb56b698a41ccdefc624a09d6beb0d38b5de0b2303ecaf  0.0s
+ => => extracting sha256:52630fc75a18675c530ed9eba5f55eca09b03e91bd5bc15307918bbc1a7e729  0.0s
+ => => extracting sha256:dd64bf2dd177757451a98fcdc999a339c35dee5d9872d8f4dc69c8f3c4dd011  0.0s
+ => => extracting sha256:4aa0ea1413d37a58615488592a0b827ea4b2e48fa5a77cf707d0e35f025e613  0.0s
+ => => extracting sha256:ebddc55facdc6b1f7e0f30816a5fc7cc62f38abdf76c0a8b0a0ce5208575479  0.0s
+ => => extracting sha256:bdfd7f7e5bf6fc27e70b59101db21c3d8284d283884419dd5fe7020583bb79c  0.0s
+ => [stage-1 2/3] WORKDIR /bin                                                            0.2s
+ => [builder 2/4] WORKDIR /workspace                                                      2.5s
+ => [builder 3/4] COPY . .                                                                0.9s
+ => [builder 4/4] RUN make build-scheduler GO_BUILD_ENV='CGO_ENABLED=0 GOOS=linux GOARC  71.0s
+ => [stage-1 3/3] COPY --from=builder /workspace/bin/kube-scheduler .                     0.1s
+ => exporting to docker image format                                                      3.3s
+ => => exporting layers                                                                   2.2s
+ => => exporting manifest sha256:46adb32fb54bec21c79c33deec3dc50634c29d50d2d318086c7a659  0.0s
+ => => exporting config sha256:7384b02ea4430107be3b7bccd43d0817e287abd4d3950a3ab1d4a0cc2  0.0s
+ => => sending tarball                                                                    1.1s
+ => importing to docker                                                                   0.7s
+ => => loading layer 69ece57bec38 106.05kB / 106.05kB                                     0.7s
+ => => loading layer 621c35e751a5 13.63kB / 13.63kB                                       0.5s
+ => => loading layer 191cb2c9f7f9 332.58kB / 332.58kB                                     0.5s
+ => => loading layer 275a30dd8ce9 34.90kB / 34.90kB                                       0.4s
+ => => loading layer 4d049f83d9cf 67B / 67B                                               0.4s
+ => => loading layer af5aa97ebe6c 188B / 188B                                             0.4s
+ => => loading layer 6f1cdceb6a31 123B / 123B                                             0.4s
+ => => loading layer bd3cdfae1d3f 162B / 162B                                             0.3s
+ => => loading layer 4cde6b0bb6f5 80B / 80B                                               0.3s
+ => => loading layer 1a73b54f556b 385B / 385B                                             0.3s
+ => => loading layer 187cfc6d1e3e 311B / 311B                                             0.3s
+ => => loading layer 5fd2536c39c0 136.99kB / 136.99kB                                     0.3s
+ => => loading layer 5f70bf18a086 32B / 32B                                               0.3s
+ => => loading layer a6f2579efce5 22.58MB / 22.58MB                                       0.3s
+
+ 1 warning found (use docker --debug to expand):
+ - InvalidDefaultArgInFrom: Default value for ARG $GO_BASE_IMAGE results in empty or invalid base image name (line 16)
+[+] Building 44.8s (14/14) FINISHED                            docker-container:relaxed_turing
+ => [internal] load build definition from Dockerfile                                      0.0s
+ => => transferring dockerfile: 1.06kB                                                    0.0s
+ => WARN: InvalidDefaultArgInFrom: Default value for ARG $GO_BASE_IMAGE results in empty  0.0s
+ => [internal] load metadata for gcr.io/distroless/static:nonroot                         0.3s
+ => [internal] load metadata for docker.io/library/golang:1.23.0                          0.4s
+ => [internal] load .dockerignore                                                         0.0s
+ => => transferring context: 2B                                                           0.0s
+ => [builder 1/4] FROM docker.io/library/golang:1.23.0@sha256:acfb46be39840f8c2a6b9efdd6  0.0s
+ => => resolve docker.io/library/golang:1.23.0@sha256:acfb46be39840f8c2a6b9efdd673c66270  0.0s
+ => [stage-1 1/3] FROM gcr.io/distroless/static:nonroot@sha256:f9f84bd968430d7d35e8e6d55  0.0s
+ => => resolve gcr.io/distroless/static:nonroot@sha256:f9f84bd968430d7d35e8e6d55c40efb0b  0.0s
+ => [internal] load build context                                                         0.1s
+ => => transferring context: 48.01kB                                                      0.1s
+ => CACHED [stage-1 2/3] WORKDIR /bin                                                     0.0s
+ => CACHED [builder 2/4] WORKDIR /workspace                                               0.0s
+ => CACHED [builder 3/4] COPY . .                                                         0.0s
+ => [builder 4/4] RUN make build-controller GO_BUILD_ENV='CGO_ENABLED=0 GOOS=linux GOAR  41.9s
+ => [stage-1 3/3] COPY --from=builder /workspace/bin/controller .                         0.4s 
+ => exporting to docker image format                                                      1.8s 
+ => => exporting layers                                                                   1.6s 
+ => => exporting manifest sha256:5abf25d1091afcc91964cc95ea036e2305cdf25d3bd80a7ed0784e8  0.0s 
+ => => exporting config sha256:b620f003379f24c768219dee463c5787ed722f2bc3c97e9a2fdc7519d  0.0s 
+ => => sending tarball                                                                    0.3s 
+ => importing to docker                                                                   0.2s
+ => => loading layer 98836bb49985 15.93MB / 15.93MB                                       0.2s
+
+ 1 warning found (use docker --debug to expand):
+ - InvalidDefaultArgInFrom: Default value for ARG $GO_BASE_IMAGE results in empty or invalid base image name (line 16)
+relaxed_turing removed
+luish@luish-Nitro-AN515-57:~/Documents/death/scheduler-plugins$  docker images | grep scheduler
+localhost:5000/scheduler-plugins/controller       v20260202-v0.32.5-devel-7-g5c0d60ec   b620f003379f   25 seconds ago       56.3MB
+localhost:5000/scheduler-plugins/kube-scheduler   v20260202-v0.32.5-devel-7-g5c0d60ec   7384b02ea443   About a minute ago   84.7MB
+luish@luish-Nitro-AN515-57:~/Documents/death/scheduler-plugins$  docker save localhost:5000/scheduler-plugins/kube-scheduler:v20260202-v0.32.5-devel-7-g5c0d60ec -o /tmp/energy-scheduler.tar
+luish@luish-Nitro-AN515-57:~/Documents/death/scheduler-plugins$  scp /tmp/energy-scheduler.tar luish@192.168.18.37:/tmp/
+The authenticity of host '192.168.18.37 (192.168.18.37)' can't be established.
+ED25519 key fingerprint is SHA256:29OoPi8OiIVhJqGowxg3ZBJU/oamMcwy+JeQ7R94KMY.
+This host key is known by the following other names/addresses:
+    ~/.ssh/known_hosts:21: [hashed name]
+    ~/.ssh/known_hosts:23: [hashed name]
+    ~/.ssh/known_hosts:33: [hashed name]
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added '192.168.18.37' (ED25519) to the list of known hosts.
+energy-scheduler.tar                                         100%   81MB   1.5MB/s   00:54    
+luish@luish-Nitro-AN515-57:~/Documents/death/scheduler-plugins$  ssh luish@192.168.18.37 "sudo ctr -n k8s.io images import /tmp/energy-scheduler.tar && rm /tmp/energy-scheduler.tar"
+unpacking localhost:5000/scheduler-plugins/kube-scheduler:v20260202-v0.32.5-devel-7-g5c0d60ec (sha256:7e0b6489ce483ea9bd0e5aa403315cf907dcac8a454d54b683b59db0fcc46754)...done
+luish@luish-Nitro-AN515-57:~/Documents/death/scheduler-plugins$  sudo ctr -n k8s.io images import /tmp/energy-scheduler.tar && rm /tmp/energy-scheduler.tar
+[sudo] password for luish: 
+unpacking localhost:5000/scheduler-plugins/kube-scheduler:v20260202-v0.32.5-devel-7-g5c0d60ec (sha256:7e0b6489ce483ea9bd0e5aa403315cf907dcac8a454d54b683b59db0fcc46754)...done
+luish@luish-Nitro-AN515-57:~/Documents/death/scheduler-plugins$  kubectl create configmap energy-scheduler-config --from-file=/home/luish/Documents/death/scheduler-plugins/energy-score-config.yaml -n kube-system
+configmap/energy-scheduler-config created
+luish@luish-Nitro-AN515-57:~/Documents/death/scheduler-plugins$  kubectl apply -f /home/luish/Documents/death/scheduler-plugins/manifests/energy-scheduler/rbac.yaml
+serviceaccount/energy-scheduler created
+clusterrolebinding.rbac.authorization.k8s.io/energy-scheduler-as-kube-scheduler created
+clusterrolebinding.rbac.authorization.k8s.io/energy-scheduler-as-volume-scheduler created
+luish@luish-Nitro-AN515-57:~/Documents/death/scheduler-plugins$  kubectl apply -f /home/luish/Documents/death/scheduler-plugins/manifests/energy-scheduler/deployment.yaml
+deployment.apps/energy-scheduler created
+luish@luish-Nitro-AN515-57:~/Documents/death/scheduler-plugins$  kubectl get pods -n kube-system | grep energy-scheduler
+energy-scheduler-77d4bbc78-9crj6               0/1     CrashLoopBackOff   1 (5s ago)   10s
+luish@luish-Nitro-AN515-57:~/Documents/death/scheduler-plugins$  kubectl logs -n kube-system energy-scheduler-77d4bbc78-9crj6
+I0203 04:53:51.000150       1 flags.go:64] FLAG: --allow-metric-labels="[]"
+I0203 04:53:51.000207       1 flags.go:64] FLAG: --allow-metric-labels-manifest=""
+I0203 04:53:51.000212       1 flags.go:64] FLAG: --authentication-kubeconfig=""
+I0203 04:53:51.000215       1 flags.go:64] FLAG: --authentication-skip-lookup="false"
+I0203 04:53:51.000218       1 flags.go:64] FLAG: --authentication-token-webhook-cache-ttl="10s"
+I0203 04:53:51.000221       1 flags.go:64] FLAG: --authentication-tolerate-lookup-failure="true"
+I0203 04:53:51.000223       1 flags.go:64] FLAG: --authorization-always-allow-paths="[/healthz,/readyz,/livez]"
+I0203 04:53:51.000232       1 flags.go:64] FLAG: --authorization-kubeconfig=""
+I0203 04:53:51.000235       1 flags.go:64] FLAG: --authorization-webhook-cache-authorized-ttl="10s"
+I0203 04:53:51.000239       1 flags.go:64] FLAG: --authorization-webhook-cache-unauthorized-ttl="10s"
+I0203 04:53:51.000242       1 flags.go:64] FLAG: --bind-address="0.0.0.0"
+I0203 04:53:51.000248       1 flags.go:64] FLAG: --cert-dir=""
+I0203 04:53:51.000252       1 flags.go:64] FLAG: --client-ca-file=""
+I0203 04:53:51.000255       1 flags.go:64] FLAG: --config="/etc/kubernetes/energy-score-config.yaml"
+I0203 04:53:51.000259       1 flags.go:64] FLAG: --contention-profiling="true"
+I0203 04:53:51.000262       1 flags.go:64] FLAG: --disable-http2-serving="false"
+I0203 04:53:51.000267       1 flags.go:64] FLAG: --disabled-metrics="[]"
+I0203 04:53:51.000275       1 flags.go:64] FLAG: --emulated-version="[]"
+I0203 04:53:51.000283       1 flags.go:64] FLAG: --feature-gates=""
+I0203 04:53:51.000290       1 flags.go:64] FLAG: --help="false"
+I0203 04:53:51.000294       1 flags.go:64] FLAG: --http2-max-streams-per-connection="0"
+I0203 04:53:51.000299       1 flags.go:64] FLAG: --kube-api-burst="100"
+I0203 04:53:51.000305       1 flags.go:64] FLAG: --kube-api-content-type="application/vnd.kubernetes.protobuf"
+I0203 04:53:51.000311       1 flags.go:64] FLAG: --kube-api-qps="50"
+I0203 04:53:51.000323       1 flags.go:64] FLAG: --kubeconfig=""
+I0203 04:53:51.000327       1 flags.go:64] FLAG: --leader-elect="true"
+I0203 04:53:51.000331       1 flags.go:64] FLAG: --leader-elect-lease-duration="15s"
+I0203 04:53:51.000337       1 flags.go:64] FLAG: --leader-elect-renew-deadline="10s"
+I0203 04:53:51.000341       1 flags.go:64] FLAG: --leader-elect-resource-lock="leases"
+I0203 04:53:51.000346       1 flags.go:64] FLAG: --leader-elect-resource-name="kube-scheduler"
+I0203 04:53:51.000350       1 flags.go:64] FLAG: --leader-elect-resource-namespace="kube-system"
+I0203 04:53:51.000355       1 flags.go:64] FLAG: --leader-elect-retry-period="2s"
+I0203 04:53:51.000360       1 flags.go:64] FLAG: --log-flush-frequency="5s"
+I0203 04:53:51.000365       1 flags.go:64] FLAG: --log-text-info-buffer-size="0"
+I0203 04:53:51.000378       1 flags.go:64] FLAG: --log-text-split-stream="false"
+I0203 04:53:51.000382       1 flags.go:64] FLAG: --logging-format="text"
+I0203 04:53:51.000388       1 flags.go:64] FLAG: --master=""
+I0203 04:53:51.000392       1 flags.go:64] FLAG: --permit-address-sharing="false"
+I0203 04:53:51.000395       1 flags.go:64] FLAG: --permit-port-sharing="false"
+I0203 04:53:51.000400       1 flags.go:64] FLAG: --pod-max-in-unschedulable-pods-duration="5m0s"
+I0203 04:53:51.000404       1 flags.go:64] FLAG: --profiling="true"
+I0203 04:53:51.000408       1 flags.go:64] FLAG: --requestheader-allowed-names="[]"
+I0203 04:53:51.000417       1 flags.go:64] FLAG: --requestheader-client-ca-file=""
+I0203 04:53:51.000421       1 flags.go:64] FLAG: --requestheader-extra-headers-prefix="[x-remote-extra-]"
+I0203 04:53:51.000431       1 flags.go:64] FLAG: --requestheader-group-headers="[x-remote-group]"
+I0203 04:53:51.000440       1 flags.go:64] FLAG: --requestheader-uid-headers="[]"
+I0203 04:53:51.000449       1 flags.go:64] FLAG: --requestheader-username-headers="[x-remote-user]"
+I0203 04:53:51.000455       1 flags.go:64] FLAG: --secure-port="10259"
+I0203 04:53:51.000457       1 flags.go:64] FLAG: --show-hidden-metrics-for-version=""
+I0203 04:53:51.000460       1 flags.go:64] FLAG: --tls-cert-file=""
+I0203 04:53:51.000462       1 flags.go:64] FLAG: --tls-cipher-suites="[]"
+I0203 04:53:51.000469       1 flags.go:64] FLAG: --tls-min-version=""
+I0203 04:53:51.000471       1 flags.go:64] FLAG: --tls-private-key-file=""
+I0203 04:53:51.000473       1 flags.go:64] FLAG: --tls-sni-cert-key="[]"
+I0203 04:53:51.000482       1 flags.go:64] FLAG: --v="5"
+I0203 04:53:51.000486       1 flags.go:64] FLAG: --version="false"
+I0203 04:53:51.000491       1 flags.go:64] FLAG: --vmodule=""
+I0203 04:53:51.000497       1 flags.go:64] FLAG: --write-config-to=""
+I0203 04:53:51.193271       1 serving.go:386] Generated self-signed cert in-memory
+E0203 04:53:51.194308       1 run.go:72] "command failed" err="stat /home/luish/.kube/config: no such file or directory"
+luish@luish-Nitro-AN515-57:~/Documents/death/scheduler-plugins$  kubectl delete configmap energy-scheduler-config -n kube-system
+configmap "energy-scheduler-config" deleted
+luish@luish-Nitro-AN515-57:~/Documents/death/scheduler-plugins$  kubectl create configmap energy-scheduler-config --from-file=/home/luish/Documents/death/scheduler-plugins/energy-score-config.yaml -n kube-system
+configmap/energy-scheduler-config created
+luish@luish-Nitro-AN515-57:~/Documents/death/scheduler-plugins$  kubectl delete pod -n kube-system -l component=energy-scheduler
+pod "energy-scheduler-77d4bbc78-9crj6" deleted
+luish@luish-Nitro-AN515-57:~/Documents/death/scheduler-plugins$  sleep 5 && kubectl get pods -n kube-system | grep energy-scheduler
+energy-scheduler-77d4bbc78-vzpzw               1/1     Running   0          46s
+luish@luish-Nitro-AN515-57:~/Documents/death/scheduler-plugins$  kubectl logs -n kube-system -l component=energy-scheduler | grep -i "energy\|plugin" | head -20
+E0203 04:54:49.054321       1 reflector.go:166] "Unhandled Error" err="pkg/mod/k8s.io/client-go@v0.32.5/tools/cache/reflector.go:251: Failed to watch *v1.ConfigMap: failed to list *v1.ConfigMap: configmaps \"extension-apiserver-authentication\" is forbidden: User \"system:serviceaccount:kube-system:energy-scheduler\" cannot list resource \"configmaps\" in API group \"\" in the namespace \"kube-system\"" logger="UnhandledError"
+W0203 04:54:59.361943       1 reflector.go:569] pkg/mod/k8s.io/client-go@v0.32.5/tools/cache/reflector.go:251: failed to list *v1.ConfigMap: configmaps "extension-apiserver-authentication" is forbidden: User "system:serviceaccount:kube-system:energy-scheduler" cannot list resource "configmaps" in API group "" in the namespace "kube-system"
+E0203 04:54:59.362026       1 reflector.go:166] "Unhandled Error" err="pkg/mod/k8s.io/client-go@v0.32.5/tools/cache/reflector.go:251: Failed to watch *v1.ConfigMap: failed to list *v1.ConfigMap: configmaps \"extension-apiserver-authentication\" is forbidden: User \"system:serviceaccount:kube-system:energy-scheduler\" cannot list resource \"configmaps\" in API group \"\" in the namespace \"kube-system\"" logger="UnhandledError"
+W0203 04:55:21.458232       1 reflector.go:569] pkg/mod/k8s.io/client-go@v0.32.5/tools/cache/reflector.go:251: failed to list *v1.ConfigMap: configmaps "extension-apiserver-authentication" is forbidden: User "system:serviceaccount:kube-system:energy-scheduler" cannot list resource "configmaps" in API group "" in the namespace "kube-system"
+E0203 04:55:21.458322       1 reflector.go:166] "Unhandled Error" err="pkg/mod/k8s.io/client-go@v0.32.5/tools/cache/reflector.go:251: Failed to watch *v1.ConfigMap: failed to list *v1.ConfigMap: configmaps \"extension-apiserver-authentication\" is forbidden: User \"system:serviceaccount:kube-system:energy-scheduler\" cannot list resource \"configmaps\" in API group \"\" in the namespace \"kube-system\"" logger="UnhandledError"
+W0203 04:56:11.603772       1 reflector.go:569] pkg/mod/k8s.io/client-go@v0.32.5/tools/cache/reflector.go:251: failed to list *v1.ConfigMap: configmaps "extension-apiserver-authentication" is forbidden: User "system:serviceaccount:kube-system:energy-scheduler" cannot list resource "configmaps" in API group "" in the namespace "kube-system"
+E0203 04:56:11.603879       1 reflector.go:166] "Unhandled Error" err="pkg/mod/k8s.io/client-go@v0.32.5/tools/cache/reflector.go:251: Failed to watch *v1.ConfigMap: failed to list *v1.ConfigMap: configmaps \"extension-apiserver-authentication\" is forbidden: User \"system:serviceaccount:kube-system:energy-scheduler\" cannot list resource \"configmaps\" in API group \"\" in the namespace \"kube-system\"" logger="UnhandledError"
+luish@luish-Nitro-AN515-57:~/Documents/death/scheduler-plugins$  kubectl apply -f /home/luish/Documents/death/scheduler-plugins/manifests/energy-scheduler/rbac.yaml
+serviceaccount/energy-scheduler unchanged
+clusterrolebinding.rbac.authorization.k8s.io/energy-scheduler-as-kube-scheduler unchanged
+clusterrolebinding.rbac.authorization.k8s.io/energy-scheduler-as-volume-scheduler unchanged
+rolebinding.rbac.authorization.k8s.io/energy-scheduler-extension-apiserver-authentication-reader created
+luish@luish-Nitro-AN515-57:~/Documents/death/scheduler-plugins$  kubectl apply -f /home/luish/Documents/death/scheduler-plugins/test-pod.yaml
+pod/test-energy-score created
+luish@luish-Nitro-AN515-57:~/Documents/death/scheduler-plugins$  kubectl get pods -o wide
+NAME                READY   STATUS    RESTARTS   AGE   IP               NODE                    NOMINATED NODE   READINESS GATES
+test-energy-score   1/1     Running   0          21s   172.16.139.198   luish-aspire-a315-55g   <none>           <none>
+luish@luish-Nitro-AN515-57:~/Documents/death/scheduler-plugins$  kubectl get events --sort-by='.lastTimestamp' | grep -i "test-energy-score\|scheduled"
+28s         Normal    Scheduled                 pod/test-energy-score        Successfully assigned default/test-energy-score to luish-aspire-a315-55g
+27s         Normal    Pulled                    pod/test-energy-score        Container image "k8s.gcr.io/pause:3.2" already present on machine
+27s         Normal    Created                   pod/test-energy-score        Created container: pause
+26s         Normal    Started                   pod/test-energy-score        Started container pause
+luish@luish-Nitro-AN515-57:~/Documents/death/scheduler-plugins$  kubectl describe pod test-energy-score | grep -A 2 "Events:"
+Events:
+  Type    Reason     Age   From               Message
+  ----    ------     ----  ----               -------
+luish@luish-Nitro-AN515-57:~/Documents/death/scheduler-plugins$  kubectl logs -n kube-system -l component=energy-scheduler --tail=50 | grep -i "test-energy-score"
+I0203 04:56:52.954991       1 eventhandlers.go:214] "Add event for scheduled pod" pod="default/test-energy-score"
+I0203 04:56:52.979706       1 eventhandlers.go:251] "Update event for scheduled pod" pod="default/test-energy-score"
+I0203 04:56:53.592364       1 eventhandlers.go:251] "Update event for scheduled pod" pod="default/test-energy-score"
+I0203 04:56:54.298801       1 eventhandlers.go:251] "Update event for scheduled pod" pod="default/test-energy-score"
+luish@luish-Nitro-AN515-57:~/Documents/death/scheduler-plugins$  kubectl logs -n kube-system -l component=energy-scheduler --tail=100 | grep -E "Score|plugin|energy" | head -20
+W0203 04:54:39.904880       1 reflector.go:569] pkg/mod/k8s.io/client-go@v0.32.5/tools/cache/reflector.go:251: failed to list *v1.ConfigMap: configmaps "extension-apiserver-authentication" is forbidden: User "system:serviceaccount:kube-system:energy-scheduler" cannot list resource "configmaps" in API group "" in the namespace "kube-system"
+E0203 04:54:39.904904       1 reflector.go:166] "Unhandled Error" err="pkg/mod/k8s.io/client-go@v0.32.5/tools/cache/reflector.go:251: Failed to watch *v1.ConfigMap: failed to list *v1.ConfigMap: configmaps \"extension-apiserver-authentication\" is forbidden: User \"system:serviceaccount:kube-system:energy-scheduler\" cannot list resource \"configmaps\" in API group \"\" in the namespace \"kube-system\"" logger="UnhandledError"
+I0203 04:54:39.966831       1 plugin.go:146] "getting namespace, assuming empty set of namespace labels" namespace="kube-system" err="namespace \"kube-system\" not found"
+I0203 04:54:39.966859       1 plugin.go:146] "getting namespace, assuming empty set of namespace labels" namespace="kube-system" err="namespace \"kube-system\" not found"
+I0203 04:54:39.966880       1 plugin.go:146] "getting namespace, assuming empty set of namespace labels" namespace="kube-system" err="namespace \"kube-system\" not found"
+I0203 04:54:39.966905       1 plugin.go:146] "getting namespace, assuming empty set of namespace labels" namespace="kube-system" err="namespace \"kube-system\" not found"
+I0203 04:54:39.966968       1 plugin.go:146] "getting namespace, assuming empty set of namespace labels" namespace="kube-system" err="namespace \"kube-system\" not found"
+I0203 04:54:39.966980       1 eventhandlers.go:214] "Add event for scheduled pod" pod="kube-system/energy-scheduler-77d4bbc78-vzpzw"
+I0203 04:54:39.966993       1 plugin.go:146] "getting namespace, assuming empty set of namespace labels" namespace="kube-system" err="namespace \"kube-system\" not found"
+I0203 04:54:39.967015       1 plugin.go:146] "getting namespace, assuming empty set of namespace labels" namespace="kube-system" err="namespace \"kube-system\" not found"
+I0203 04:54:39.967034       1 plugin.go:146] "getting namespace, assuming empty set of namespace labels" namespace="kube-system" err="namespace \"kube-system\" not found"
+I0203 04:54:39.967056       1 plugin.go:146] "getting namespace, assuming empty set of namespace labels" namespace="kube-system" err="namespace \"kube-system\" not found"
+I0203 04:54:39.967077       1 plugin.go:146] "getting namespace, assuming empty set of namespace labels" namespace="kube-system" err="namespace \"kube-system\" not found"
+I0203 04:54:39.967097       1 plugin.go:146] "getting namespace, assuming empty set of namespace labels" namespace="kube-system" err="namespace \"kube-system\" not found"
+I0203 04:54:39.967110       1 plugin.go:146] "getting namespace, assuming empty set of namespace labels" namespace="kube-system" err="namespace \"kube-system\" not found"
+W0203 04:54:41.222096       1 reflector.go:569] pkg/mod/k8s.io/client-go@v0.32.5/tools/cache/reflector.go:251: failed to list *v1.ConfigMap: configmaps "extension-apiserver-authentication" is forbidden: User "system:serviceaccount:kube-system:energy-scheduler" cannot list resource "configmaps" in API group "" in the namespace "kube-system"
+E0203 04:54:41.222204       1 reflector.go:166] "Unhandled Error" err="pkg/mod/k8s.io/client-go@v0.32.5/tools/cache/reflector.go:251: Failed to watch *v1.ConfigMap: failed to list *v1.ConfigMap: configmaps \"extension-apiserver-authentication\" is forbidden: User \"system:serviceaccount:kube-system:energy-scheduler\" cannot list resource \"configmaps\" in API group \"\" in the namespace \"kube-system\"" logger="UnhandledError"
+W0203 04:54:43.470951       1 reflector.go:569] pkg/mod/k8s.io/client-go@v0.32.5/tools/cache/reflector.go:251: failed to list *v1.ConfigMap: configmaps "extension-apiserver-authentication" is forbidden: User "system:serviceaccount:kube-system:energy-scheduler" cannot list resource "configmaps" in API group "" in the namespace "kube-system"
+E0203 04:54:43.471072       1 reflector.go:166] "Unhandled Error" err="pkg/mod/k8s.io/client-go@v0.32.5/tools/cache/reflector.go:251: Failed to watch *v1.ConfigMap: failed to list *v1.ConfigMap: configmaps \"extension-apiserver-authentication\" is forbidden: User \"system:serviceaccount:kube-system:energy-scheduler\" cannot list resource \"configmaps\" in API group \"\" in the namespace \"kube-system\"" logger="UnhandledError"
+W0203 04:54:49.054201       1 reflector.go:569] pkg/mod/k8s.io/client-go@v0.32.5/tools/cache/reflector.go:251: failed to list *v1.ConfigMap: configmaps "extension-apiserver-authentication" is forbidden: User "system:serviceaccount:kube-system:energy-scheduler" cannot list resource "configmaps" in API group "" in the namespace "kube-system"
+luish@luish-Nitro-AN515-57:~/Documents/death/scheduler-plugins$  kubectl get lease -n kube-system | grep scheduler
+kube-scheduler                         luish-Nitro-AN515-57_98dd7a90-8fac-47fc-a081-6159e0b9b934                   18m
+luish@luish-Nitro-AN515-57:~/Documents/death/scheduler-plugins$  kubectl scale deployment energy-scheduler --replicas=0 -n kube-system
+deployment.apps/energy-scheduler scaled
+luish@luish-Nitro-AN515-57:~/Documents/death/scheduler-plugins$  kubectl get pods -n kube-system | grep energy-scheduler
+luish@luish-Nitro-AN515-57:~/Documents/death/scheduler-plugins$ kubectl scale deployment energy-scheduler --replicas=0 -n kube-system
+deployment.apps/energy-scheduler scaled
+luish@luish-Nitro-AN515-57:~/Documents/death/scheduler-plugins$ 
