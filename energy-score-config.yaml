@@ -1,0 +1,17 @@
+apiVersion: kubescheduler.config.k8s.io/v1
+kind: KubeSchedulerConfiguration
+clientConnection:
+  kubeconfig: "/home/luish/.kube/config"
+leaderElection:
+  leaderElect: false
+profiles:
+  - schedulerName: energy-scheduler
+    plugins:
+      score:
+        enabled:
+          - name: EnergyScore
+            weight: 2
+    pluginConfig:
+      - name: EnergyScore
+        args:
+          weightMultiplier: 1.0

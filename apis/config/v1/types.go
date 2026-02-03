@@ -22,6 +22,14 @@ import (
 	schedulerconfigv1 "k8s.io/kube-scheduler/config/v1"
 )
 
+
+// +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
+type EnergyScoreArgs struct {
+    metav1.TypeMeta `json:",inline"`
+    WeightMultiplier float64 `json:"weightMultiplier,omitempty"`
+}
+
+
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
 
 // CoschedulingArgs defines the scheduling parameters for Coscheduling plugin.
@@ -297,3 +305,4 @@ type PowerModel struct {
 	// Power = K0 + K1 * e ^(K2 * x) : where x is utilisation
 	// Idle power of node will be K0 + K1
 }
+

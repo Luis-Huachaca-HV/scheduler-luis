@@ -250,3 +250,9 @@ func SetDefaults_SySchedArgs(obj *SySchedArgs) {
 		obj.DefaultProfileName = &DefaultSySchedProfileName
 	}
 }
+func SetDefaults_EnergyScoreArgs(obj *EnergyScoreArgs) {
+	if obj.WeightMultiplier == 0 {
+		obj.WeightMultiplier = 1.0
+	}
+}
+
