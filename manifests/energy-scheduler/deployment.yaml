@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: energy-scheduler
+  namespace: kube-system
+  labels:
+    component: scheduler
+    tier: control-plane
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: energy-scheduler
+  template:
+    metadata:
+      labels:
+        component: energy-scheduler
+    spec:
+      serviceAccountName: energy-scheduler
+      priorityClassName: system-cluster-critical
+      containers:
+        - name: energy-scheduler
+          image: localhost:5000/scheduler-plugins/kube-scheduler:latest
+          imagePullPolicy: IfNotPresent
+          args:
+            - --config=/etc/kubernetes/energy-score-config.yaml
+            - --v=5
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+          volumeMounts:
+            - name: config
+              mountPath: /etc/kubernetes/energy-score-config.yaml
+              subPath: energy-score-config.yaml
+      volumes:
+        - name: config
+          configMap:
+            name: energy-scheduler-config
