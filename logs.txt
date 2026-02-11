@@ -284,3 +284,19 @@ luish@luish-Nitro-AN515-57:~/Documents/death/scheduler-plugins$  kubectl get pod
 luish@luish-Nitro-AN515-57:~/Documents/death/scheduler-plugins$ kubectl scale deployment energy-scheduler --replicas=0 -n kube-system
 deployment.apps/energy-scheduler scaled
 luish@luish-Nitro-AN515-57:~/Documents/death/scheduler-plugins$ 
+
+
+
+# LEVANTAR
+kubectl scale deployment energy-scheduler --replicas=1 -n kube-system
+
+# PARAR
+kubectl scale deployment energy-scheduler --replicas=0 -n kube-system
+
+# PARAR Y RESTAURAR DEFAULT SCHEDULER
+sudo mv /etc/kubernetes/kube-scheduler.yaml.backup /etc/kubernetes/manifests/kube-scheduler.yaml
+sudo rm /etc/kubernetes/energy-score-config.yaml
+
+# MONITOREO
+kubectl logs -n kube-system -l component=energy-scheduler -f
+kubectl describe pod <pod-name>

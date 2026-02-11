@@ -3,6 +3,7 @@ kind: Pod
 metadata:
   name: test-energy-score
 spec:
+  schedulerName: energy-scheduler
   containers:
   - name: pause
     image: k8s.gcr.io/pause:3.2
